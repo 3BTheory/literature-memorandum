@@ -1,0 +1,16 @@
+---
+layout: none
+---
+
+{% capture concat_tags %}{% for tag in site.tags %}{{ tag[1].size | plus: 100000 }}#{{ tag[0] }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}{% assign sorted = concat_tags | split:',' | sort | reverse %}
+
+{
+  {% for tag in sorted %}{% assign items = tag | split: '#' %}{% capture tagname %}{{ items[1] }}{% endcapture %}"#{{tagname | slugify }}": [
+    {% for post in site.tags[tagname] %}{
+      "title"  : "{{ post.title | url_encode }}",
+      "url"    : "{{ site.baseurl }}{{ post.url }}",
+      "excerpt": "{{ post.excerpt | strip | strip_html | url_encode }}"
+    } {% unless forloop.last %},{% endunless %}{% endfor %}
+  ] {% unless forloop.last %},{% endunless %}
+  {% endfor %}
+}

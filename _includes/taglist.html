@@ -1,0 +1,2 @@
+{% capture concat_tags %}{% for tag in site.tags %}{{ tag[1].size | plus: 100000 }}#{{ tag[0] }}#{{ tag[1].size }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}{% assign sorted = concat_tags | split:',' | sort | reverse %}
+{% for tag in sorted %}{% assign items = tag | split: '#' %}{% capture tagname %}{{ items[1] }}{% endcapture %}<a href="#{{ tagname | slugify }}" onclick="show();"><code class="highligher-rouge"><nobr>{{ tagname }}</nobr></code></a>{% unless forloop.last %} / {% endunless %}{% endfor %}
